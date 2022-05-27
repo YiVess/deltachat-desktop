@@ -5,8 +5,7 @@ pipeline {
 	stage('Build') {
 		steps {	
 		echo 'Building'
-                sh 'docker-compose build build-agent'
-				sh 'docker-compose up -d test-agent'	
+                sh 'docker-compose build buildsection'
             }
             post {
                 failure {
@@ -22,8 +21,8 @@ pipeline {
 	stage('Test') {
 		steps {	
 		echo 'Testing'
-                sh 'docker-compose build test-agent'
-				sh 'docker-compose up -d test-agent'	
+                sh 'docker-compose build testsection'
+				sh 'docker-compose up -d testsection'	
             }
             post {
                 failure {
