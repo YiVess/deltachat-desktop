@@ -43,7 +43,7 @@ pipeline {
                 archiveArtifacts(artifacts: '**/*.txt', followSymlinks: false)
 				sh 'docker-compose up -d buildsection'
 				echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-		docker tag buildsection:latest yivess/lab07
+		docker tag build-agent:latest yivess/lab07
 		docker push yivess/lab07
             }
             post {
