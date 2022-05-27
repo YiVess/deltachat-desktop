@@ -9,11 +9,11 @@ pipeline {
             }
             post {
                 failure {
-                    echo 'ERROR IN TESTING - Job ${env.JOB_NAME} build ${env.BUILD_NAME}'
+                    echo 'ERROR IN TESTING'
                     sh 'false'
                 }
                 success {
-                    echo 'SUCCESS IN TESTING - Job ${env.JOB_NAME} build ${env.BUILD_NAME}'
+                    echo 'SUCCESS IN TESTING'
                 }
             }
         }
