@@ -1,7 +1,7 @@
 pipeline {
 	agent any
 	environment {
-        DOCKERHUB_CREDENTIALS= credentials('lab07')
+        DOCKERHUB_CREDENTIALS= credentials("lab07")
     }
 	stages {
 		
@@ -38,13 +38,16 @@ pipeline {
             }
         }
 	stage('Deploy') {
+	    agent any
 		steps {
                 echo 'Deploying'
                 archiveArtifacts(artifacts: '**/*.txt', followSymlinks: false)
 				sh 'docker-compose up -d buildsection'
-				echo '$DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-		sh 'docker tag build-agent:latest yivess/lab07'
-		sh 'docker push yivess/lab07'
+				
+				withCredentials([usernamePassword(credentialsId: 'lab07', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubUser')]) {
+                    sh "docker login -u ${dockerhubUser} -p ${dockerhubPassword}"
+                    sh "docker push yivess/lab07"
+                }
             }
             post {
 		always{
