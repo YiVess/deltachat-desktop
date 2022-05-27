@@ -3,8 +3,9 @@ pipeline {
 	stages {
 		stage('Test') {
 			steps {
-                sh 'docker-compose build'
-				sh 'docker-compose up'
+				echo 'Testing'
+				sh 'docker-compose build'
+						sh 'docker-compose up'
             }
             post {
                 failure {
