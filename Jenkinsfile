@@ -34,5 +34,22 @@ pipeline {
                 }
             }
         }
+	stage('Deploy') {
+		steps {
+                echo 'Deploying'
+                archiveArtifacts(artifacts: '**/*/txt', followSymlinks: false)
+                sh 'docker-compose build deploysection'
+				sh 'docker-compose up -d deploysection'
+            }
+            post {
+                failure {
+                    echo 'ERROR IN DEPLOYING'
+                    sh 'false'
+                }
+                success {
+                    echo 'SUCCESS IN DEPLOYING'
+                }
+            }
+        }
     }
 }
