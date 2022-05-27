@@ -37,7 +37,7 @@ pipeline {
 	stage('Deploy') {
 		steps {
                 echo 'Deploying'
-                archiveArtifacts(artifacts: '**/*/txt', followSymlinks: false)
+                archiveArtifacts(artifacts: '**/*.txt', followSymlinks: false)
                 sh 'docker-compose build deploysection'
 				sh 'docker-compose up -d deploysection'
             }
