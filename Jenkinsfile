@@ -1,5 +1,8 @@
 pipeline {
 	agent any
+	environment {
+        DOCKERHUB_CREDENTIALS= credentials('lab07')
+    }
 	stages {
 		
 	stage('Build') {
@@ -38,10 +41,15 @@ pipeline {
 		steps {
                 echo 'Deploying'
                 archiveArtifacts(artifacts: '**/*.txt', followSymlinks: false)
-                sh 'docker-compose build deploysection'
-				sh 'docker-compose up -d deploysection'
+				sh 'docker-compose up -d buildsection'
+				echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+		docker tag buildsection:latest yivess/lab07
+		docker push yivess/lab07
             }
             post {
+		always{
+		    sh 'docker logout'
+		}
                 failure {
                     echo 'ERROR IN DEPLOYING'
                     sh 'false'
